@@ -1,0 +1,33 @@
+- React UI (App.js)
+
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [score, setScore] = useState(null);
+  const handleCompute = async () => {
+    const resp = await fetch('/api/compute-score', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ gstReturns: 'dummy-data' })
+    });
+    const { creditScore } = await resp.json();
+    setScore(creditScore);
+  };
+
+  return (
+    <div className="App">
+      <h1>GST-CreditMax</h1>
+      <button onClick={handleCompute}>Compute Credit Score</button>
+      {score && (
+        <div className="score-card">
+          <h2>Your GST Credit Score:</h2>
+          <span className="score">{score}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+ 
